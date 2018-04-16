@@ -5,7 +5,7 @@ LABEL maintainer="EEA: IDM2 A-Team <eea-edw-a-team-alerts@googlegroups.com>"
 RUN groupadd -r synapse && useradd -r -g synapse synapse
 
 # Git branch to build from
-ARG SYNAPSE_VERSION=v0.26.0
+ARG SYNAPSE_VERSION=v0.27.4
 ARG SYNAPSE_REST_AUTH=v0.1.1 
 
 # use --build-arg REBUILD=$(date) to invalidate the cache and upgrade all
@@ -53,7 +53,7 @@ RUN set -ex \
         sqlite \
         zlib1g \
         zlib1g-dev \
-    &&  pip install --upgrade pip \
+    &&  pip install --upgrade pip==9.0.3 \
         python-ldap \
         pyopenssl \
         enum34 \
