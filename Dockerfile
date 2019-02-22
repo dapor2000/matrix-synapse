@@ -15,18 +15,16 @@ RUN set -ex \
     && export DEBIAN_FRONTEND=noninteractive \
     && mkdir -p /var/cache/apt/archives \
     && touch /var/cache/apt/archives/lock \
-    && apt update \
-    && apt remove -y libcurl4 \
-    && apt install -y libcurl4 curl \
-    && apt-get install -y apt lsb-core curl apt-transport-https \
-    && echo "deb https://matrix.org/packages/debian `lsb_release -cs` main" | tee /etc/apt/sources.list.d/matrix-org.list \
-    && curl "https://matrix.org/packages/debian/repo-key.asc" |   apt-key add - \ 
-    && apt update \
-    && apt-get update \
-    && apt-get install -y --no-install-recommends \ 
+    && apt-get update 
+RUN apt-get install -y wget gnupg2 software-properties-common 
+RUN wget -qO - https://matrix.org/packages/debian/repo-key.asc | apt-key add - \
+    && add-apt-repository https://matrix.org/packages/debian/ \
+    && apt-get update 
+RUN apt-get install -y --no-install-recommends \ 
         bash \
+        nano  \
+        matrix-synapse \
         supervisor \
-        matrix-synapse-py3 \
     && rm -rf /var/lib/apt/* /var/cache/apt/*
 
 RUN mkdir /data \
