@@ -6,7 +6,7 @@ RUN groupadd -r synapse && useradd -r -g synapse synapse
 
 # Git branch to build from
 ARG SYNAPSE_VERSION=v0.99.1.1
-ARG SYNAPSE_REST_AUTH=v0.1.1 
+ARG SYNAPSE_REST_AUTH=v0.1.2 
 
 # use --build-arg REBUILD=$(date) to invalidate the cache and upgrade all
 # packages
@@ -18,6 +18,7 @@ RUN set -ex \
     && apt-get update \
     && apt-get install -y --no-install-recommends \ 
         bash \
+        apt-utils   \
         coreutils \
         coturn \
         file \
@@ -53,17 +54,17 @@ RUN set -ex \
         sqlite \
         zlib1g \
         zlib1g-dev \
-    &&  pip install --upgrade pip==9.0.3 \
+    &&  pip install --upgrade pip==19.0.3 \
         python-ldap \
         pyopenssl \
         enum34 \
         ipaddress \
         lxml \
         supervisor \
-    && git clone --branch $SYNAPSE_VERSION --depth 1 https://github.com/matrix-org/synapse.git \
+    && git clone --branch $SYNAPSE_VERSION --depth 1 https://github.com/matrix-org/synapse.git /synapse \
     && cd /synapse \
     && pip install --upgrade . \
-    && mv res/templates /synapse_templates  \
+    && mv synapse/res/templates /synapse_templates  \
     && cd / \
     && rm -rf /synapse \
     && git clone  --branch $SYNAPSE_REST_AUTH --depth 1 https://github.com/maxidor/matrix-synapse-rest-auth.git \
