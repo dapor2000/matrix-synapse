@@ -25,6 +25,7 @@ RUN set -ex \
     && apt-get update \
     && apt-get install -y --no-install-recommends \ 
         bash \
+        supervisor \
         matrix-synapse-py3 \
     && rm -rf /var/lib/apt/* /var/cache/apt/*
 
